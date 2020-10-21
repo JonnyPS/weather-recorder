@@ -1,0 +1,1 @@
+# An app which records weather in my area daily, adds it to a DB, and the user can retrieve the information on the frontend
