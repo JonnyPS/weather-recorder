@@ -19,6 +19,8 @@
   "homepage": "https://github.com/JonnyPS/weather-recorder#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "node": "^15.0.0"
+    "mysql": "^2.18.1",
+    "node": "^15.0.0",
+    "sqlite3": "^5.0.0"
   }
 }
