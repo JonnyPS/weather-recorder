@@ -1,13 +1,15 @@
 // const posts = require("./posts.js")
 const axios = require('axios');
 const cron = require('node-cron');
+const API_KEY = require('../api-key');
+require('dotenv').config()
 
 module.exports = {
   getWeather: function (database) {
     console.log('getWeather')
     const task = cron.schedule('* * * * *', () => {
       console.log('Running CRON job now: ');
-      axios.get("http://api.openweathermap.org/data/2.5/weather?q=Bristol,GB&units=metric&appid=bd1a8fb5e34d3a26776fd33b4a57ff1b")
+      axios.get("http://api.openweathermap.org/data/2.5/weather?q=Bristol,GB&units=metric&appid="+ process.env.API_KEY)
         .then(response => {
           console.log(response)
           console.log("Data retrieved....")

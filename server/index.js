@@ -43,7 +43,7 @@ gets.getWeather(DB);
 
 // send data from database to browser
 app.get('/', (req, res) => {
-  var sql = 'SELECT Temperature Location '
+  var sql = 'SELECT * '
   sql += 'FROM Bristol '
 
   DB.all(sql, [], function(error, rows) {
