@@ -1,39 +1,62 @@
 const express = require('express')
 const app = express()
 const port = 8080;
-// const initDB = require("./database/create-db");
-// console.log( initDB.setupDB())
+const initDB = require("./database/create-db");
+// const posts = require("./controllers/posts.js");
+const gets = require("./controllers/gets.js");
 var sqlite3 = require('sqlite3').verbose();
 const DB_PATH = 'server/database/test.db'
+// const cron = require('node-cron');
+// const axios = require('axios');
 
+// connect to database
 const DB = new sqlite3.Database(DB_PATH, function(err){
   if (err) {
       console.log(err)
       return
   }
+
   console.log('Connected to ' + DB_PATH + ' database.')
+
+  // create table
+  dbSchema = `CREATE TABLE IF NOT EXISTS Bristol (
+    id integer NOT NULL PRIMARY KEY,
+    Location text,
+    Temperature number NOT NULL,
+    Feels_Like number,
+    Humidity number,
+    Wind number,
+    Description text,
+    Icon text,
+    Timestamp integer
+  );`
+
+  // // execute schema, throw error if necessary
+  DB.exec(dbSchema, function(err){
+    if (err) {
+      console.log(err)
+    }
+  });
 });
 
-dbSchema = `CREATE TABLE IF NOT EXISTS Users (
-  id integer NOT NULL PRIMARY KEY,
-  login text NOT NULL UNIQUE,
-  password text NOT NULL,
-  email text NOT NULL UNIQUE,
-  first_name text,
-  last_name text
-);`
+gets.getWeather(DB);
 
-DB.exec(dbSchema, function(err){
-if (err) {
-  console.log(err)
-}
-});
+// send data from database to browser
+app.get('/', (req, res) => {
+  var sql = 'SELECT Temperature Location '
+  sql += 'FROM Bristol '
 
+  DB.all(sql, [], function(error, rows) {
+    if (error) {
+      console.log(error)
+      return
+    }
 
-// app.get('/', (req, res) => {
-//   res.send('Hello World!')
-// })
+    res.json({"data": rows})
+  });
+})
 
-// app.listen(port, () => {
-//   console.log(`Example app listening at http://localhost:${port}`)
-// })
+// listen on port
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
+})
