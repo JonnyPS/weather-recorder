@@ -1,4 +1,3 @@
-// const posts = require("./posts.js")
 const axios = require('axios');
 const cron = require('node-cron');
 require('dotenv').config()
