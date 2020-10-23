@@ -18,8 +18,8 @@ const DB = new sqlite3.Database(DB_PATH, function(err){
 
   console.log('Connected to ' + DB_PATH + ' database.')
 
-  // create table
-  dbSchema = `CREATE TABLE IF NOT EXISTS Bristol (
+  // create table for Bristol
+  dbSchemaBristol = `CREATE TABLE IF NOT EXISTS Bristol (
     id integer NOT NULL PRIMARY KEY,
     Location text,
     Temperature number NOT NULL,
@@ -31,12 +31,34 @@ const DB = new sqlite3.Database(DB_PATH, function(err){
     Timestamp integer
   );`
 
-  // // execute schema, throw error if necessary
-  DB.exec(dbSchema, function(err){
-    if (err) {
-      console.log(err)
-    }
-  });
+  // create table for London
+  dbSchemaLondon = `CREATE TABLE IF NOT EXISTS London (
+    id integer NOT NULL PRIMARY KEY,
+    Location text,
+    Temperature number NOT NULL,
+    Feels_Like number,
+    Humidity number,
+    Wind number,
+    Description text,
+    Icon text,
+    Timestamp integer
+  );`
+
+  let tables = [dbSchemaBristol, dbSchemaLondon];
+
+  // execute schema for each table, throw error if necessary
+  // tables.forEach( (item) => {
+    DB.exec(dbSchemaBristol, function(err){
+      if (err) {
+        console.log(err)
+      }
+    });
+    DB.exec(dbSchemaLondon, function(err){
+      if (err) {
+        console.log(err)
+      }
+    });  
+  // })
 });
 
 gets.getWeather(DB);
@@ -44,16 +66,41 @@ gets.getWeather(DB);
 // send data from database to browser
 app.get('/', (req, res) => {
   var sql = 'SELECT * '
-  sql += 'FROM Bristol '
+  sql += 'FROM Bristol ';
+  var sql2 = 'SELECT * '
+  sql2 += 'FROM London '
 
   DB.all(sql, [], function(error, rows) {
     if (error) {
       console.log(error)
       return
     }
+    console.log('selecting from Bristol.....')
+    getNextTable(rows);
 
-    res.json({"data": rows})
+    // res.json({"data": rows})
   });
+
+  function getNextTable(prevTable) {
+    DB.all(sql2, [], function(error, rows) {
+      if (error) {
+        console.log(error)
+        return
+      }
+      console.log('selecting from London.....')
+      
+      res.json({
+        "data": [
+          {"Bristol": prevTable},
+          {"London": rows}
+        ]
+      })  
+
+      // res.json({"data": rows})
+    });
+  }
+
+
 })
 
 // listen on port
