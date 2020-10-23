@@ -5,7 +5,7 @@ const initDB = require("./database/create-db");
 // const posts = require("./controllers/posts.js");
 const gets = require("./controllers/gets.js");
 var sqlite3 = require('sqlite3').verbose();
-const DB_PATH = 'server/database/test.db'
+const DB_PATH = 'server/database/weather.db'
 // const cron = require('node-cron');
 // const axios = require('axios');
 
