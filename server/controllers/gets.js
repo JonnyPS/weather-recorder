@@ -1,7 +1,6 @@
 // const posts = require("./posts.js")
 const axios = require('axios');
 const cron = require('node-cron');
-const API_KEY = require('../api-key');
 require('dotenv').config()
 
 module.exports = {
