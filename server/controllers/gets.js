@@ -5,7 +5,7 @@ require('dotenv').config()
 module.exports = {
   getWeather: function (database) {
     console.log('getWeather')
-    const task = new CronJob(' * * * * *', () => {
+    const task = new CronJob('12 21 * * * *', () => {
       console.log('Running CRON job now: ');
         axios.get("http://api.openweathermap.org/data/2.5/weather?q=Bristol,GB&units=metric&appid=fe46f64d11af51352d4aea674767e906")
           .then(response => {
