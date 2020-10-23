@@ -28,7 +28,7 @@ module.exports = {
         });
     }, {
       scheduled: false,
-      timezone: "Etc/Greenwich"
+      timezone: "Europe/London"
     })
     task.start();
   },
