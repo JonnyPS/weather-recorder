@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 8080;
+const port = process.env.PORT || 5000;
 const initDB = require("./database/create-db");
 // const posts = require("./controllers/posts.js");
 const gets = require("./controllers/gets.js");
