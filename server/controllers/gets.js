@@ -8,7 +8,7 @@ module.exports = {
     console.log('getWeather')
     const task = cron.schedule('* * * * *', () => {
       console.log('Running CRON job now: ');
-      axios.get("http://api.openweathermap.org/data/2.5/weather?q=Bristol,GB&units=metric&appid="+ process.env.API_KEY)
+      axios.get("http://api.openweathermap.org/data/2.5/weather?q=Bristol,GB&units=metric&appid=fe46f64d11af51352d4aea674767e906")
         .then(response => {
           console.log(response)
           console.log("Data retrieved....")
