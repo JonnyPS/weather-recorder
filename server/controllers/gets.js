@@ -5,7 +5,7 @@ require('dotenv').config()
 module.exports = {
   getWeather: function (database) {
     console.log('getWeather')
-    const task = cron.schedule('0 13 * * *', () => {
+    const task = cron.schedule('30 13 * * *', () => {
       console.log('Running CRON job now: ');
       axios.get("http://api.openweathermap.org/data/2.5/weather?q=Bristol,GB&units=metric&appid=fe46f64d11af51352d4aea674767e906")
         .then(response => {
@@ -26,6 +26,9 @@ module.exports = {
         .catch(error => {
           console.log(error);
         });
+    }, {
+      scheduled: false,
+      timezone: "Etc/Greenwich"
     })
     task.start();
   },
