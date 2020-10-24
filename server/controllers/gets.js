@@ -5,11 +5,11 @@ require('dotenv').config()
 module.exports = {
   getWeather: function (database) {
     console.log('getWeather')
-    const task = new CronJob('00 16 * * *', () => {
+    const task = new CronJob('19 16 * * *', () => {
       console.log('Running CRON job now: ');
         axios.get("https://api.openweathermap.org/data/2.5/onecall?lat=51.46&lon=-2.6&exclude=minutely,hourly,current&units=metric&appid=fe46f64d11af51352d4aea674767e906")
           .then(response => {
-            console.log(response.data)
+            // console.log(response.data)
             console.log("Data retrieved for Bristol....")
             this.postData(
               database,
@@ -68,39 +68,60 @@ module.exports = {
     let timestamp = response.data.daily[0].dt;
 
 
-    console.log("location ", typeof location )
-    console.log("sunrise ", typeof sunrise )
-    console.log("sunset ", typeof sunset )
-    console.log("dayTemp ", typeof dayTemp )
-    console.log("minTemp ", typeof minTemp )
-    console.log("maxTemp ", typeof maxTemp )
-    console.log("nightTemp ", typeof nightTemp )
-    console.log("eveTemp ", typeof eveTemp )
-    console.log("mornTemp ", typeof mornTemp )
-    console.log("feelsLike_day ", typeof feelsLike_day )
-    console.log("feelsLike_night ", typeof feelsLike_night )
-    console.log("feelsLike_eve ", typeof feelsLike_eve )
-    console.log("feelsLike_morn ", typeof feelsLike_morn )
+    // console.log("location ", typeof location )
+    // console.log("sunrise ", typeof sunrise )
+    // console.log("sunset ", typeof sunset )
+    // console.log("dayTemp ", typeof dayTemp )
+    // console.log("minTemp ", typeof minTemp )
+    // console.log("maxTemp ", typeof maxTemp )
+    // console.log("nightTemp ", typeof nightTemp )
+    // console.log("eveTemp ", typeof eveTemp )
+    // console.log("mornTemp ", typeof mornTemp )
+    // console.log("feelsLike_day ", typeof feelsLike_day )
+    // console.log("feelsLike_night ", typeof feelsLike_night )
+    // console.log("feelsLike_eve ", typeof feelsLike_eve )
+    // console.log("feelsLike_morn ", typeof feelsLike_morn )
 
-    console.log("humidity ", typeof humidity )
-    console.log("wind ", typeof wind )
-    console.log("windDir ", typeof windDir )
-    console.log("main ", typeof main )
-    console.log("description ", typeof description )
-    console.log("icon ", typeof icon )
-    console.log("cloudCover ", typeof cloudCover )
-    console.log("pop ", typeof pop )
-    console.log("rain ", typeof rain )
-    console.log("uvi ", typeof uvi )
-    console.log("timestamp ", typeof timestamp )
-
-    // let alertSender = response.data.alerts[0].sender_name;
-
-    
+    // console.log("humidity ", typeof humidity )
+    // console.log("wind ", typeof wind )
+    // console.log("windDir ", typeof windDir )
+    // console.log("main ", typeof main )
+    // console.log("description ", typeof description )
+    // console.log("icon ", typeof icon )
+    // console.log("cloudCover ", typeof cloudCover )
+    // console.log("pop ", typeof pop )
+    // console.log("rain ", typeof rain )
+    // console.log("uvi ", typeof uvi )
+    // console.log("timestamp ", typeof timestamp )
 
     var sql= "INSERT INTO " + tableName + "(Location, Sunrise, Sunset, DayTemp, MinTemp, MaxTemp, NightTemp, EveTemp, MornTemp, Feels_Like_Day, Feels_Like_Night, Feels_Like_Eve, Feels_Like_Morn, Humidity, WindSpeed, WindDeg, Weather_Main, Weather_Description, Weather_Icon, Clouds, Pop, Rain, UVI, Snow, Timestamp) "
     sql += "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) "
-    database.run(sql, [location, sunrise, sunset, dayTemp, minTemp, maxTemp, nightTemp, eveTemp, mornTemp, feelsLike_day, feelsLike_night, feelsLike_eve, feelsLike_morn, humidity, wind, windDir, main, description, icon, cloudCover, pop, rain, uvi, snow,  timestamp], function(error) {
+    database.run(sql, [
+      location, 
+      sunrise, 
+      sunset, 
+      dayTemp, 
+      minTemp, 
+      maxTemp, 
+      nightTemp, 
+      eveTemp, 
+      mornTemp, 
+      feelsLike_day, 
+      feelsLike_night, 
+      feelsLike_eve, 
+      feelsLike_morn, 
+      humidity, 
+      wind, 
+      windDir, 
+      main, 
+      description, 
+      icon, 
+      cloudCover, 
+      pop, 
+      rain, 
+      uvi, 
+      snow, 
+      timestamp], function(error) {
         if (error) {
             console.log(error)
         } else {
