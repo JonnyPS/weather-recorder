@@ -26,6 +26,7 @@ const DB = new sqlite3.Database(DB_PATH, function(err){
     Feels_Like number,
     Humidity number,
     Wind number,
+    Main text,
     Description text,
     Icon text,
     Timestamp integer
@@ -39,6 +40,7 @@ const DB = new sqlite3.Database(DB_PATH, function(err){
     Feels_Like number,
     Humidity number,
     Wind number,
+    Main text,
     Description text,
     Icon text,
     Timestamp integer

@@ -9,8 +9,8 @@ module.exports = {
       console.log('Running CRON job now: ');
         axios.get("http://api.openweathermap.org/data/2.5/weather?q=Bristol,GB&units=metric&appid=fe46f64d11af51352d4aea674767e906")
           .then(response => {
-            console.log(response)
-            console.log("Data retrieved....")
+            // console.log(response)
+            console.log("Data retrieved for Bristol....")
             this.postData(
               database,
               "Bristol",
@@ -22,8 +22,8 @@ module.exports = {
           });
         axios.get("http://api.openweathermap.org/data/2.5/weather?q=London,GB&units=metric&appid=fe46f64d11af51352d4aea674767e906")
         .then(response => {
-          console.log(response)
-          console.log("Data retrieved....")
+          // console.log(response)
+          console.log("Data retrieved for London....")
           this.postData(
             database,
             "London",
@@ -43,13 +43,14 @@ module.exports = {
     let feels_like = response.data.main.feels_like;
     let humidity = response.data.main.humidity;
     let wind = response.data.wind.speed;
+    let main = response.data.weather[0].main;
     let description = response.data.weather[0].description;
     let icon = response.data.weather[0].icon;
     let timestamp = response.data.dt;
 
-    var sql= "INSERT INTO " + tableName + "(Location, Temperature, Feels_Like, Humidity, Wind, Description, Icon, Timestamp) "
-    sql += "VALUES (? ,?, ?, ?, ?, ?, ?, ? ) "
-    database.run(sql, [name, temp,  feels_like, humidity, wind, description, icon, timestamp], function(error) {
+    var sql= "INSERT INTO " + tableName + "(Location, Temperature, Feels_Like, Humidity, Wind, Main, Description, Icon, Timestamp) "
+    sql += "VALUES (? ,?, ?, ?, ?, ?, ?, ?, ? ) "
+    database.run(sql, [name, temp,  feels_like, humidity, wind, main, description, icon, timestamp], function(error) {
         if (error) {
             console.log(error)
         } else {
