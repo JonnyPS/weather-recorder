@@ -9,6 +9,14 @@ const DB_PATH = 'server/database/weather.db'
 // const cron = require('node-cron');
 // const axios = require('axios');
 
+const { Pool } = require('pg');
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.DATABASE_URL ? true : false
+});
+
+
+
 // connect to database
 const DB = new sqlite3.Database(DB_PATH, function(err){
   if (err) {
@@ -135,6 +143,17 @@ app.get('/', (req, res) => {
   }
 
 
+}).get('/db', async (req, res) => {
+	try {
+		const client = await pool.connect();
+		const result = await client.query('SELECT * FROM temp_table2');
+		const results = { 'results': (result) ? result.rows : null};
+		res.render('pages/db', results );
+		client.release();
+	} catch (err) {
+		console.error(err);
+		res.send("Error " + err);
+	}
 })
 
 // listen on port
