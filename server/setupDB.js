@@ -1,5 +1,5 @@
 const { Client } = require('pg');
-const client = require('./config.js');
+const clientconfig = require('./config.js');
 
 const init = {
 	connectDB: function () {
@@ -100,6 +100,8 @@ const init = {
 					client.end();
 			})
 			.finally((err) => {
+				console.log('exit process.... tables have been made')
+				process.exit(0)
 					if ( !err ) {
 						// this.createColumns();
 					}
@@ -126,8 +128,18 @@ const init = {
 	// }
 }
 
+async function setup() {
+	clientconfig.setupClient();
+}
+setup()
+	.then(
+		init.connectDB(client)
+	)
+	.then(
+		console.log(client)
+	)
 
-init.connectDB();
+
 
 
 
