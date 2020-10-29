@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-		"start": "node server/index.js",
-		"initDatabases": "node server/setupDB.js"
+    "start": "node server/index.js",
+    "initDatabases": "node server/setupDB.js"
   },
   "repository": {
     "type": "git",
@@ -32,8 +32,6 @@
     "pg": "^8.4.2",
     "pg-hstore": "^2.3.3",
     "pgtools": "^0.3.0",
-    "sequelize": "^6.3.5",
-    "sequelize-cli": "^6.2.0",
     "sqlite3": "^5.0.0"
   },
   "devDependencies": {},

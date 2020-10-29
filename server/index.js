@@ -8,7 +8,7 @@ var sqlite3 = require('sqlite3').verbose();
 const DB_PATH = 'server/database/weather.db'
 // const cron = require('node-cron');
 // const axios = require('axios');
-const db = require('../models/index.js');
+// const db = require('../models/index.js');
 const { Client } = require('pg');
 
 const pg = require('pgtools');
