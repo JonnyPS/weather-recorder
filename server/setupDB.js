@@ -1,11 +1,5 @@
 const { Client } = require('pg');
-const client = new Client({
-	user: 'postgres',
-	host: 'localhost',
-	database: 'testing13',
-	password: '1234abcd',
-	port: 5432,
-});
+const client = require('./config.js');
 
 const init = {
 	connectDB: function () {
@@ -16,22 +10,43 @@ const init = {
 				client.end();
 			} else {
 				console.log('connected to ' + client.database)
-				this.createTable();
+				this.createFirstTable();
 			}
 		});
 	},
-	createTable: function () {
-		const query = `
-		CREATE TABLE users (
-				email varchar,
-				firstName varchar,
-				lastName varchar,
-				age int
-		);
-		`;
-		client.query(query)
+	createFirstTable: function () {
+		const bristolDBschema = `
+			CREATE TABLE IF NOT EXISTS Bristol (
+				id INT GENERATED ALWAYS AS IDENTITY,
+				Location text, 
+				Sunrise INT,
+				Sunset INT,
+				DayTemp NUMERIC,
+				MinTemp NUMERIC,
+				MaxTemp NUMERIC,
+				NightTemp NUMERIC,
+				EveTemp NUMERIC,
+				MornTemp NUMERIC,
+				Feels_Like_Day NUMERIC,
+				Feels_Like_Night NUMERIC,
+				Feels_Like_Eve NUMERIC,
+				Feels_Like_Morn NUMERIC,
+				Humidity NUMERIC,
+				WindSpeed NUMERIC,
+				WindDeg NUMERIC,
+				Weather_Main TEXT,
+				Weather_Description TEXT,
+				Weather_Icon TEXT,
+				Clouds NUMERIC,
+				Pop INT,
+				Rain NUMERIC,
+				UVI NUMERIC,
+				Snow NUMERIC,
+				Timestamp INT
+			)`;
+		client.query(bristolDBschema)
 			.then(res => {
-					console.log('Table is successfully created');
+					console.log('Table for Bristol is successfully created');
 			})
 			.catch(err => {
 					console.error(err);
@@ -40,7 +55,53 @@ const init = {
 			})
 			.finally((err) => {
 					if ( !err ) {
-						this.createColumns();
+						// this.createColumns();
+						this.createSecondTable();
+					}
+			});
+		},
+		createSecondTable: function () {
+			const londonDBschema = `
+			CREATE TABLE IF NOT EXISTS London (
+				id INT GENERATED ALWAYS AS IDENTITY,
+				Location text, 
+				Sunrise INT,
+				Sunset INT,
+				DayTemp NUMERIC,
+				MinTemp NUMERIC,
+				MaxTemp NUMERIC,
+				NightTemp NUMERIC,
+				EveTemp NUMERIC,
+				MornTemp NUMERIC,
+				Feels_Like_Day NUMERIC,
+				Feels_Like_Night NUMERIC,
+				Feels_Like_Eve NUMERIC,
+				Feels_Like_Morn NUMERIC,
+				Humidity NUMERIC,
+				WindSpeed NUMERIC,
+				WindDeg NUMERIC,
+				Weather_Main TEXT,
+				Weather_Description TEXT,
+				Weather_Icon TEXT,
+				Clouds NUMERIC,
+				Pop INT,
+				Rain NUMERIC,
+				UVI NUMERIC,
+				Snow NUMERIC,
+				Timestamp INT
+			)`;
+		client.query(londonDBschema)
+			.then(res => {
+					console.log('Table for London is successfully created');
+			})
+			.catch(err => {
+					console.error(err);
+					console.log('Table error');
+					client.end();
+			})
+			.finally((err) => {
+					if ( !err ) {
+						// this.createColumns();
 					}
 			});
 	}

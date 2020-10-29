@@ -14,42 +14,49 @@ const { Client } = require('pg');
 const pg = require('pgtools');
 
 const clientConfig = require('./config.js');
-console.log(clientConfig)
+// console.log(clientConfig)
 
 // const initDB = require('./setupDB.js');
+const clientconfig = require('./config.js');
 
+async function setup() {
+	clientconfig.setupClient();
+}
+setup()
+	.then(
+		gets.getWeather(client, client.database)
+	)
+	.then(
+		console.log(client)
+	)
+	.then(connectToDatabase())
 
-
-const client = new Client({
-	user: 'postgres',
-	host: 'localhost',
-	database: 'testing13',
-	password: '1234abcd',
-	port: 5432,
-});
-
-client.connect(err => {
-	if (err) {
-		console.error('connection error', err.stack)
-		console.log('DB error');
-		client.end();
-	} else {
-		console.log('connected to ' + client.database)
-	}
-});
+function connectToDatabase() {
+	console.log('connectToDatabase')
+	
+	client.connect(err => {
+		if (err) {
+			console.error('connection error', err.stack)
+			console.log('DB error');
+			client.end();
+		} else {
+			console.log('connected to ' + client.database)
+		}
+	});
+}
 
 app.get('/', (req, res) => {
 	console.log('getting....')
-	const query = `SELECT * from users`;
+	const query = `SELECT * from Bristol`;
 	client.query(query, (err, resp) => {
     if (err) {
 			console.error(err);
 			return;
     }
 		console.log('anyone?')
-		res.json({data: resp})
-			console.log(resp);
-    
+		res.json({data: resp.rows})
+			// console.log(resp);
+		
     // client.end();
 	});
 })
@@ -89,9 +96,9 @@ app.get('/', (req, res) => {
 // }
 // get();
 
-app.get('/', (req, res) => {
-	console.log('hello world')
-})
+// app.get('/', (req, res) => {
+// 	console.log('hello world')
+// })
 
 
 
