@@ -83,58 +83,15 @@ module.exports = {
     let snow = response.data.daily[0].snow;
     let timestamp = response.data.daily[0].dt;
 
+		console.log('connected to ' + client.database)
+		const text = `INSERT INTO ${ tableName } (location, sunrise, Sunset, DayTemp, MinTemp, MaxTemp, NightTemp, EveTemp, MornTemp, Feels_Like_Day, Feels_Like_Night, Feels_Like_Eve, Feels_Like_Morn, Humidity, WindSpeed, WindDeg, Weather_Main, Weather_Description, Weather_Icon, Clouds, Pop, Rain, UVI, Snow, Timestamp) 
+		VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25) RETURNING *`
+		const values = [location, sunrise, sunset, dayTemp, minTemp, maxTemp, nightTemp, eveTemp, mornTemp, feelsLike_day, feelsLike_night, feelsLike_eve, feelsLike_morn, humidity, wind, windDir, main, description, icon, cloudCover, pop, rain, uvi, snow, timestamp]
 
-    // console.log("location ", typeof location )
-    // console.log("sunrise ", typeof sunrise )
-    // console.log("sunset ", typeof sunset )
-    // console.log("dayTemp ", typeof dayTemp )
-    // console.log("minTemp ", typeof minTemp )
-    // console.log("maxTemp ", typeof maxTemp )
-    // console.log("nightTemp ", typeof nightTemp )
-    // console.log("eveTemp ", typeof eveTemp )
-    // console.log("mornTemp ", typeof mornTemp )
-    // console.log("feelsLike_day ", typeof feelsLike_day )
-    // console.log("feelsLike_night ", typeof feelsLike_night )
-    // console.log("feelsLike_eve ", typeof feelsLike_eve )
-    // console.log("feelsLike_morn ", typeof feelsLike_morn )
-
-    // console.log("humidity ", typeof humidity )
-    // console.log("wind ", typeof wind )
-    // console.log("windDir ", typeof windDir )
-    // console.log("main ", typeof main )
-    // console.log("description ", typeof description )
-    // console.log("icon ", typeof icon )
-    // console.log("cloudCover ", typeof cloudCover )
-    // console.log("pop ", typeof pop )
-    // console.log("rain ", typeof rain )
-    // console.log("uvi ", typeof uvi )
-    // console.log("timestamp ", typeof timestamp )
-
-
-		// console.log(`${ location }`)
-
-		// client.connect(err => {
-		// 	if (err) {
-		// 		console.error('connection error', err.stack)
-		// 		console.log('DB error');
-		// 		client.end();
-		// 	} else {
-				console.log('connected to ' + client.database)
-				// var query = `INSERT INTO bristol (id, Location, Sunrise, Sunset ) VALUES (${ location }, 033, 35 )`;
-				const text = `INSERT INTO ${ tableName } (location, sunrise, Sunset, DayTemp, MinTemp, MaxTemp, NightTemp, EveTemp, MornTemp, Feels_Like_Day, Feels_Like_Night, Feels_Like_Eve, Feels_Like_Morn, Humidity, WindSpeed, WindDeg, Weather_Main, Weather_Description, Weather_Icon, Clouds, Pop, Rain, UVI, Snow, Timestamp) 
-				VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25) RETURNING *`
-				const values = [location, sunrise, sunset, dayTemp, minTemp, maxTemp, nightTemp, eveTemp, mornTemp, feelsLike_day, feelsLike_night, feelsLike_eve, feelsLike_morn, humidity, wind, windDir, main, description, icon, cloudCover, pop, rain, uvi, snow, timestamp]
-
-				client.query(text, values)
-					.then(res => {
-						console.log('Success! \nPosted to table: ', tableName )
-						// console.log(res.rows[0])
-						// { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
-					})
-					.catch(e => console.error(e.stack))
-
-			}
-		// });
-    // var query = `INSERT INTO ${ tableName } (Location, Sunrise, Sunset, DayTemp, MinTemp, MaxTemp, NightTemp, EveTemp, MornTemp, Feels_Like_Day, Feels_Like_Night, Feels_Like_Eve, Feels_Like_Morn, Humidity, WindSpeed, WindDeg, Weather_Main, Weather_Description, Weather_Icon, Clouds, Pop, Rain, UVI, Snow, Timestamp) " 
-	}	
-// }
+		client.query(text, values)
+			.then(res => {
+				console.log('Success! \nPosted to table: ', tableName )
+			})
+			.catch(e => console.error(e.stack))
+	}
+}	
