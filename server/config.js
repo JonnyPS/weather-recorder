@@ -13,10 +13,15 @@ module.exports = {
 	}
 }
 
-		// client = new Client({
-		// 	user: 'postgres',
-		// 	host: 'localhost',
-		// 	database: 'weatherrecorder5',
-		// 	password: '1234abcd',
-		// 	port: 5432,
-		// });
+// module.exports = {
+// 	setupClient: function () {
+// 		client = new Client({
+// 				user: 'postgres',
+// 				host: 'localhost',
+// 				database: 'weatherrecorder5',
+// 				password: '1234abcd',
+// 				port: 5432,
+// 			});
+// 		return client;
+// 	}
+// }

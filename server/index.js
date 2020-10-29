@@ -1,49 +1,143 @@
 const express = require('express')
 const app = express()
 const port = process.env.PORT || 5000;
-// const initDB = require("./database/create-db");
-// const posts = require("./controllers/posts.js");
 const gets = require("./controllers/gets.js");
-var sqlite3 = require('sqlite3').verbose();
-const DB_PATH = 'server/database/weather.db'
-// const cron = require('node-cron');
-// const axios = require('axios');
-// const db = require('../models/index.js');
-const { Client } = require('pg');
-
-const pg = require('pgtools');
-
-const clientConfig = require('./config.js');
-// console.log(clientConfig)
-
-// const initDB = require('./setupDB.js');
 const clientconfig = require('./config.js');
+
+
+// set up DB tables
+const init = {
+	connectDB: function () {
+		client.connect(err => {
+			if (err) {
+				console.error('connection error', err.stack)
+				console.log('DB error');
+				client.end();
+			} else {
+				console.log('connected to ' + client.database)
+				this.createFirstTable();
+			}
+		});
+	},
+	createFirstTable: function () {
+		const bristolDBschema = `
+			CREATE TABLE IF NOT EXISTS Bristol (
+				id INT GENERATED ALWAYS AS IDENTITY,
+				Location text, 
+				Sunrise INT,
+				Sunset INT,
+				DayTemp NUMERIC,
+				MinTemp NUMERIC,
+				MaxTemp NUMERIC,
+				NightTemp NUMERIC,
+				EveTemp NUMERIC,
+				MornTemp NUMERIC,
+				Feels_Like_Day NUMERIC,
+				Feels_Like_Night NUMERIC,
+				Feels_Like_Eve NUMERIC,
+				Feels_Like_Morn NUMERIC,
+				Humidity NUMERIC,
+				WindSpeed NUMERIC,
+				WindDeg NUMERIC,
+				Weather_Main TEXT,
+				Weather_Description TEXT,
+				Weather_Icon TEXT,
+				Clouds NUMERIC,
+				Pop INT,
+				Rain NUMERIC,
+				UVI NUMERIC,
+				Snow NUMERIC,
+				Timestamp INT
+			)`;
+		client.query(bristolDBschema)
+			.then(res => {
+					console.log('Table for Bristol is successfully created');
+			})
+			.catch(err => {
+					console.error(err);
+					console.log('Table error');
+					client.end();
+			})
+			.finally((err) => {
+					if ( !err ) {
+						// this.createColumns();
+						this.createSecondTable();
+					}
+			});
+		},
+		createSecondTable: function () {
+			const londonDBschema = `
+			CREATE TABLE IF NOT EXISTS London (
+				id INT GENERATED ALWAYS AS IDENTITY,
+				Location text, 
+				Sunrise INT,
+				Sunset INT,
+				DayTemp NUMERIC,
+				MinTemp NUMERIC,
+				MaxTemp NUMERIC,
+				NightTemp NUMERIC,
+				EveTemp NUMERIC,
+				MornTemp NUMERIC,
+				Feels_Like_Day NUMERIC,
+				Feels_Like_Night NUMERIC,
+				Feels_Like_Eve NUMERIC,
+				Feels_Like_Morn NUMERIC,
+				Humidity NUMERIC,
+				WindSpeed NUMERIC,
+				WindDeg NUMERIC,
+				Weather_Main TEXT,
+				Weather_Description TEXT,
+				Weather_Icon TEXT,
+				Clouds NUMERIC,
+				Pop INT,
+				Rain NUMERIC,
+				UVI NUMERIC,
+				Snow NUMERIC,
+				Timestamp INT
+			)`;
+		client.query(londonDBschema)
+			.then(res => {
+					console.log('Table for London is successfully created');
+			})
+			.catch(err => {
+					console.error(err);
+					console.log('Table error');
+					client.end();
+			})
+			.finally((err) => {
+				console.log('exit process.... tables have been made')
+				gets.getWeather(client, client.database)
+				
+			});
+	}
+}
+
 
 async function setup() {
 	clientconfig.setupClient();
 }
 setup()
 	.then(
-		gets.getWeather(client, client.database)
+		init.connectDB(client)
 	)
 	.then(
 		console.log(client)
 	)
-	.then(connectToDatabase())
+	// .then(connectToDatabase())
 
-function connectToDatabase() {
-	console.log('connectToDatabase')
+// function connectToDatabase() {
+// 	console.log('connectToDatabase')
 	
-	client.connect(err => {
-		if (err) {
-			console.error('connection error', err.stack)
-			console.log('DB error');
-			client.end();
-		} else {
-			console.log('connected to ' + client.database)
-		}
-	});
-}
+// 	client.connect(err => {
+// 		if (err) {
+// 			console.error('connection error', err.stack)
+// 			console.log('DB error');
+// 			client.end();
+// 		} else {
+// 			console.log('connected to ' + client.database)
+// 		}
+// 	});
+// }
 
 app.get('/', (req, res) => {
 	console.log('getting....')
