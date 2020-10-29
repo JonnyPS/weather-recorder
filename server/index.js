@@ -139,21 +139,50 @@ setup()
 // 	});
 // }
 
+// app.get('/', (req, res) => {
+// 	console.log('getting....')
+// 	const query = `SELECT * from Bristol`;
+// 	client.query(query, (err, resp) => {
+//     if (err) {
+// 			console.error(err);
+// 			return;
+//     }
+// 		console.log('anyone?')
+// 		res.json({data: resp.rows})
+// 			// console.log(resp);
+		
+//     // client.end();
+// 	});
+// })
+
 app.get('/', (req, res) => {
-	console.log('getting....')
-	const query = `SELECT * from Bristol`;
+  var query = 'SELECT * from Bristol ';	
 	client.query(query, (err, resp) => {
-    if (err) {
+		if (err) {
 			console.error(err);
 			return;
-    }
-		console.log('anyone?')
-		res.json({data: resp.rows})
-			// console.log(resp);
-		
-    // client.end();
+		}
+		console.log('selecting from Bristol.....')
+    getNextTable(resp.rows);
 	});
-})
+
+  function getNextTable(prevTable) {
+		var query2 = 'SELECT * from London ';
+    client.query(query2, (err, resp) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+			console.log('selecting from London.....')
+			res.json({
+        "data": [
+          {"Bristol": prevTable},
+          {"London": resp.rows}
+        ]
+      })  
+		});
+	}
+});
 
 
 
