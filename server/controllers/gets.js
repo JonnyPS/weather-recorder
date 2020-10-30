@@ -8,7 +8,7 @@ const client = require('../config.js');
 module.exports = {
   getWeather: function (client, database) {
     console.log('getWeather')
-    const task = new CronJob('10 09 * * *', () => {
+    const task = new CronJob('15 09 * * *', () => {
       console.log('Running CRON job now: ');
         axios.get("https://api.openweathermap.org/data/2.5/onecall?lat=51.46&lon=-2.6&exclude=minutely,hourly,current&units=metric&appid=fe46f64d11af51352d4aea674767e906")
           .then(response => {
