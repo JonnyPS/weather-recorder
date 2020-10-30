@@ -18,7 +18,7 @@ module.exports = {
 // 		client = new Client({
 // 				user: 'postgres',
 // 				host: 'localhost',
-// 				database: 'weatherrecorder5',
+// 				database: 'weatherrecorder6',
 // 				password: '1234abcd',
 // 				port: 5432,
 // 			});
