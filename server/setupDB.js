@@ -101,7 +101,7 @@ const init = {
 			})
 			.finally((err) => {
 				console.log('exit process.... tables have been made')
-				process.exit()
+				// process.exit()
 					if ( !err ) {
 						// this.createColumns();
 					}
