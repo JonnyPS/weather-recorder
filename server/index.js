@@ -184,6 +184,35 @@ app.get('/', (req, res) => {
 	}
 });
 
+app.get('/humidity', (req, res) => {
+  var query = 'SELECT Humidity from Bristol WHERE Humidity > 80 ';	
+	client.query(query, (err, resp) => {
+		if (err) {
+			console.error(err);
+			return;
+		}
+		console.log('selecting from Bristol.....')
+    getNextTable(resp.rows);
+	});
+
+  function getNextTable(prevTable) {
+		var query2 = 'SELECT Humidity from London WHERE Humidity > 80 ';
+    client.query(query2, (err, resp) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+			console.log('selecting from London.....')
+			res.json({
+        "data": [
+          {"Bristol": prevTable},
+          {"London": resp.rows}
+        ]
+      })  
+		});
+	}
+});
+
 
 
 
